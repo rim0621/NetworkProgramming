@@ -1,0 +1,58 @@
+파이썬 서버 
+
+# Echo server program
+import socket
+import time
+HOST = 'localhost'                   # Symbolic name meaning all available interfaces
+PORT = 50007              # Arbitrary non-privileged port
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind((HOST, PORT))
+s.listen(1)
+location=[]
+conn, addr = s.accept()
+print('Connected by', addr)
+while 1:
+    time.sleep(1)
+    data = conn.recv(1024)
+    if not data:
+        break
+
+    location=str(data).split("'")[1]
+    print(location)
+    location2 = str(location).split(",")
+    print(int(location2[0]))
+
+--------------------------------------------------------
+자바 클라이언트
+package tcpip;
+import java.io.*;
+import java.net.*;
+
+class Tcp
+{
+public static void main(String argv[]) throws Exception
+{
+String sentence;
+String modifiedSentence;
+String a="10";
+String b="11";
+
+//BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+//int inFromUser = new BufferedReader(null);
+//inFromUser=a;
+Socket clientSocket = new Socket("localhost", 50007);
+
+
+while(true)
+{
+DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+//sentence = inFromUser.readLine();
+outToServer.writeBytes(a+" , "+b);
+modifiedSentence = inFromServer.readLine();
+System.out.println("FROM SERVER: " + modifiedSentence);
+}
+//clientSocket.close();
+}
+
+}
